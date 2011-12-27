@@ -270,3 +270,12 @@ function Stop-SshAgent() {
     }
 }
 
+function Update-AllBranches($upstream = 'master') {
+    $branches = git branch --no-color
+    foreach ($line in $branches) {
+        $branch = $line.SubString(2)
+        Write-Host "Rebasing $branch onto $upstream..."
+        git rebase $upstream $branch
+        if ($LASTEXITCODE) { break }
+    }
+}
